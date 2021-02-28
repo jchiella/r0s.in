@@ -4,6 +4,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const { nanoid } = require('nanoid');
+const validator = require('validator');
 
 const { Link } = require('./models');
 
@@ -21,36 +22,21 @@ require('dotenv').config();
 mongoose.connect(process.env.DB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useFindAndModify: false,
 });
 
-app.get('/:slug', async (req, res) => {
+app.get('/:slug', async (req, res, next) => {
   try {
-    const { url } = await Link.findOne({ slug: req.params.slug });
+    const { url } = await Link.findOne({ slug: req.params.slug }).orFail();
     res.redirect(url);
   } catch (err) {
     next(err);
   }
 });
 
-/*
-GET /links/:slug -> returns specific link information
-
-POST /links 
-  -> creates a new randomized slug and returns it as json
-  (body is { url: 'https://example.com' })
-                        
-  -> creates a new specific slug and returns it as json
-  (body is { url: '...', slug: 'blabla' })
-
-PATCH /links/:slug -> updates fields in the specific slug
-(body is fields to update)
-
-DELETE /links/:slug -> deletes specific slug
-*/
-
 app.get('/api/links/:slug', async (req, res, next) => {
   try {
-    const link = await Link.findOne({ slug: req.params.slug });
+    const link = await Link.findOne({ slug: req.params.slug }).orFail();
     res.json(link);
   } catch (err) {
     next(err);
@@ -63,30 +49,33 @@ app.post('/api/links', async (req, res, next) => {
       req.body.slug = nanoid(5);
     }
 
-    await Link.create(req.body);
-    res.status(201);
-    res.send(await Link.findOne({ slug: req.body.slug }));
+    res
+      .status(201)
+      .json(await Link.create(req.body));
   } catch (err) {
     next(err);
-  } 
+  } 0
 });
 
-app.patch('/api/links/:slug', async (req, res) => {
+app.patch('/api/links/:slug', async (req, res, next) => {
   try {
-    await Link.updateOne({ slug: req.params.slug }, { $set: req.body });
-    res.status(200);
-    res.send(await Link.findOne({ slug: req.params.slug }));
+    res
+      .status(200)
+      .json(await Link.findOneAndUpdate(
+        { slug: req.params.slug },
+        { $set: req.body },
+        { new: true },
+    ).orFail());
   } catch (err) {
     next(err);
   }
 });
 
-app.delete('/api/links/:slug', async (req, res) => {
+app.delete('/api/links/:slug', async (req, res, next) => {
   try {
-    const deletedLink = await Link.findOne({ slug: req.params.slug });
-    await Link.deleteOne({ slug: req.params.slug});
-    res.status(200);
-    res.send(deletedLink);
+    res
+      .status(200)
+      .json(await Link.findOneAndDelete({ slug: req.params.slug}).orFail());
   } catch (err) {
     next(err);
   }
@@ -97,7 +86,13 @@ app.use((err, req, res, next) => {
     return next(err);
   }
 
-  res.status(500);
+  if (err instanceof mongoose.Error.ValidationError) {
+    res.status(400);
+  } else if (err instanceof mongoose.Error.DocumentNotFoundError) {
+    res.status(404);
+  } else {
+    res.status(500);
+  }
   res.json({ error: err.toString() });
 });
 
