@@ -56,15 +56,20 @@ app.post('/api/links', async (req, res) => {
   }
   await Link.create(req.body);
   res.status(201);
-  res.send(await Link.findOne({ slug: req.body.slug }))
+  res.send(await Link.findOne({ slug: req.body.slug }));
 });
 
-app.patch('/api/links/:slug', (req, res) => {
-
+app.patch('/api/links/:slug', async (req, res) => {
+  await Link.updateOne({ slug: req.params.slug }, { $set: req.body });
+  res.status(200);
+  res.send(await Link.findOne({ slug: req.params.slug }));
 });
 
-app.delete('/api/links/:slug', (req, res) => {
-
+app.delete('/api/links/:slug', async (req, res) => {
+  const deletedLink = await Link.findOne({ slug: req.params.slug });
+  await Link.deleteOne({ slug: req.params.slug});
+  res.status(200);
+  res.send(deletedLink);
 });
 
 
