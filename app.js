@@ -44,12 +44,14 @@ PATCH /links/:slug -> updates fields in the specific slug
 DELETE /links/:slug -> deletes specific slug
 */
 
-app.get('/api/links/:slug', (req, res) => {
-
+app.get('/api/links/:slug', async (req, res) => {
+  const link = await Link.findOne({ slug: req.params.slug });
+  res.json(link);
 });
 
-app.post('/api/links', (req, res) => {
-
+app.post('/api/links', async (req, res) => {
+  await Link.create(req.body);
+  res.sendStatus(200);
 });
 
 app.patch('/api/links/:slug', (req, res) => {
