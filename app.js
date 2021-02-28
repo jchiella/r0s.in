@@ -23,8 +23,13 @@ mongoose.connect(process.env.DB_URL, {
   useUnifiedTopology: true,
 });
 
-app.get('/:slug', (req, res) => {
-  // Redirect to slug's url
+app.get('/:slug', async (req, res) => {
+  try {
+    const { url } = await Link.findOne({ slug: req.params.slug });
+    res.redirect(url);
+  } catch (err) {
+    next(err);
+  }
 });
 
 /*
