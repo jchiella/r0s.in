@@ -1,0 +1,27 @@
+{
+  "name": "r0s.in",
+  "version": "1.0.0",
+  "description": "A link shortener as sticky as its name. :)",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jchiella/r0s.in.git"
+  },
+  "author": "jchiella",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jchiella/r0s.in/issues"
+  },
+  "homepage": "https://github.com/jchiella/r0s.in#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
