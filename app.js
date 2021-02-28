@@ -3,6 +3,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const { nanoid } = require('nanoid');
 
 const { Link } = require('./models');
 
@@ -50,8 +51,12 @@ app.get('/api/links/:slug', async (req, res) => {
 });
 
 app.post('/api/links', async (req, res) => {
+  if (req.body.slug === undefined) {
+    req.body.slug = nanoid(5);
+  }
   await Link.create(req.body);
-  res.sendStatus(200);
+  res.status(201);
+  res.send(await Link.findOne({ slug: req.body.slug }))
 });
 
 app.patch('/api/links/:slug', (req, res) => {
