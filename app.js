@@ -64,7 +64,7 @@ app.patch('/api/links/:slug', async (req, res, next) => {
       .json(await Link.findOneAndUpdate(
         { slug: req.params.slug },
         { $set: req.body },
-        { new: true },
+        { new: true, runValidators: true },
     ).orFail());
   } catch (err) {
     next(err);

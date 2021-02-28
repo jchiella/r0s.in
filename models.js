@@ -14,7 +14,7 @@ const linkSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: [
-      { validator: validator.isURL, msg: 'URL is not valid' },
+      { validator: (s) => validator.isURL(s, { require_protocol: true }), msg: 'URL is not valid' },
     ],
   },
 }, { timestamps: true });
