@@ -2,6 +2,9 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
+
+const { Link } = require('./models');
 
 const app = express();
 
@@ -12,6 +15,11 @@ app.use(express.json());
 
 require('dotenv').config();
 
+mongoose.connect(process.env.DB_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
 app.get('/', (req, res) => {
   res.send('welcome to r0sin!');
 });
@@ -21,42 +29,34 @@ app.get('/:slug', (req, res) => {
 });
 
 /*
-Url object:
+GET /links/:slug -> returns specific link information
 
-{
-  slug: 'xyzab',
-  link: 'https://example.com',
-  createdAt, updatedAt, _id,
-}
-
-GET /urls/:slug -> returns specific link information
-
-POST /urls 
+POST /links 
   -> creates a new randomized slug and returns it as json
-  (body is { link: 'https://example.com' })
+  (body is { url: 'https://example.com' })
                         
   -> creates a new specific slug and returns it as json
-  (body is { link: '...', slug: 'blabla' })
+  (body is { url: '...', slug: 'blabla' })
 
-PATCH /urls/:slug -> updates fields in the specific slug
+PATCH /links/:slug -> updates fields in the specific slug
 (body is fields to update)
 
-DELETE /urls/:slug -> deletes specific slug
+DELETE /links/:slug -> deletes specific slug
 */
 
-app.get('/api/urls/:slug', (req, res) => {
+app.get('/api/links/:slug', (req, res) => {
 
 });
 
-app.post('/api/urls', (req, res) => {
+app.post('/api/links', (req, res) => {
 
 });
 
-app.patch('/api/urls/:slug', (req, res) => {
+app.patch('/api/links/:slug', (req, res) => {
 
 });
 
-app.delete('/api/urls/:slug', (req, res) => {
+app.delete('/api/links/:slug', (req, res) => {
 
 });
 
