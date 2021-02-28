@@ -43,31 +43,57 @@ PATCH /links/:slug -> updates fields in the specific slug
 DELETE /links/:slug -> deletes specific slug
 */
 
-app.get('/api/links/:slug', async (req, res) => {
-  const link = await Link.findOne({ slug: req.params.slug });
-  res.json(link);
+app.get('/api/links/:slug', async (req, res, next) => {
+  try {
+    const link = await Link.findOne({ slug: req.params.slug });
+    res.json(link);
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.post('/api/links', async (req, res) => {
-  if (req.body.slug === undefined) {
-    req.body.slug = nanoid(5);
-  }
-  await Link.create(req.body);
-  res.status(201);
-  res.send(await Link.findOne({ slug: req.body.slug }));
+app.post('/api/links', async (req, res, next) => {
+  try {
+    if (req.body.slug === undefined) {
+      req.body.slug = nanoid(5);
+    }
+
+    await Link.create(req.body);
+    res.status(201);
+    res.send(await Link.findOne({ slug: req.body.slug }));
+  } catch (err) {
+    next(err);
+  } 
 });
 
 app.patch('/api/links/:slug', async (req, res) => {
-  await Link.updateOne({ slug: req.params.slug }, { $set: req.body });
-  res.status(200);
-  res.send(await Link.findOne({ slug: req.params.slug }));
+  try {
+    await Link.updateOne({ slug: req.params.slug }, { $set: req.body });
+    res.status(200);
+    res.send(await Link.findOne({ slug: req.params.slug }));
+  } catch (err) {
+    next(err);
+  }
 });
 
 app.delete('/api/links/:slug', async (req, res) => {
-  const deletedLink = await Link.findOne({ slug: req.params.slug });
-  await Link.deleteOne({ slug: req.params.slug});
-  res.status(200);
-  res.send(deletedLink);
+  try {
+    const deletedLink = await Link.findOne({ slug: req.params.slug });
+    await Link.deleteOne({ slug: req.params.slug});
+    res.status(200);
+    res.send(deletedLink);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.use((err, req, res, next) => {
+  if (res.headersSent) {
+    return next(err);
+  }
+
+  res.status(500);
+  res.json({ error: err.toString() });
 });
 
 
