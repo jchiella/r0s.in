@@ -1,0 +1,77 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Secular One', sans-serif;
+}
+
+p {
+  font-size: 1.5rem;
+}
+
+main {
+  /* background image is base64 encoding of:
+
+    <svg class="blob" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="whoosh">
+          <stop offset="5%" stop-color="#F60" />
+          <stop offset="95%" stop-color="#FF6" />
+        </linearGradient>
+      </defs>
+      <path fill="url(#whoosh)" d="M36.6,-64.5C49,-56.4,61.5,-49.5,70.2,-39C78.9,-28.5,83.8,-14.2,78.8,-2.9C73.9,8.5,59.1,17.1,52.1,30.4C45,43.8,45.6,62,38.2,68C30.8,74.1,15.4,68,1.8,64.9C-11.8,61.8,-23.7,61.7,-32.5,56.4C-41.3,51.2,-47.2,40.9,-52.1,30.6C-57,20.4,-60.9,10.2,-66,-2.9C-71.1,-16.1,-77.3,-32.2,-71.8,-41.4C-66.4,-50.6,-49.1,-52.9,-35.2,-60.2C-21.3,-67.5,-10.6,-79.6,0.8,-81C12.2,-82.3,24.3,-72.7,36.6,-64.5Z" transform="translate(100 100)" />
+    </svg>
+  */
+  background-image: url("data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iYmxvYiIgdmlld0JveD0iMCAwIDIwMCAyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0id2hvb3NoIj4KICAgICAgICAgIDxzdG9wIG9mZnNldD0iNSUiIHN0b3AtY29sb3I9IiNGNjAiIC8+CiAgICAgICAgICA8c3RvcCBvZmZzZXQ9Ijk1JSIgc3RvcC1jb2xvcj0iI0ZGNiIgLz4KICAgICAgICA8L2xpbmVhckdyYWRpZW50PgogICAgICA8L2RlZnM+CiAgICAgIDxwYXRoIGZpbGw9InVybCgjd2hvb3NoKSIgZD0iTTM2LjYsLTY0LjVDNDksLTU2LjQsNjEuNSwtNDkuNSw3MC4yLC0zOUM3OC45LC0yOC41LDgzLjgsLTE0LjIsNzguOCwtMi45QzczLjksOC41LDU5LjEsMTcuMSw1Mi4xLDMwLjRDNDUsNDMuOCw0NS42LDYyLDM4LjIsNjhDMzAuOCw3NC4xLDE1LjQsNjgsMS44LDY0LjlDLTExLjgsNjEuOCwtMjMuNyw2MS43LC0zMi41LDU2LjRDLTQxLjMsNTEuMiwtNDcuMiw0MC45LC01Mi4xLDMwLjZDLTU3LDIwLjQsLTYwLjksMTAuMiwtNjYsLTIuOUMtNzEuMSwtMTYuMSwtNzcuMywtMzIuMiwtNzEuOCwtNDEuNEMtNjYuNCwtNTAuNiwtNDkuMSwtNTIuOSwtMzUuMiwtNjAuMkMtMjEuMywtNjcuNSwtMTAuNiwtNzkuNiwwLjgsLTgxQzEyLjIsLTgyLjMsMjQuMywtNzIuNywzNi42LC02NC41WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTAwIDEwMCkiIC8+CiAgICA8L3N2Zz4=");
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  width: 100vw;
+  height: 100vh;
+  margin: auto;
+  padding: 10rem;
+  text-align: center;
+}
+
+.title {
+  font-size: 5rem;
+  color: whitesmoke;
+  text-shadow: black 2px 5px;
+}
+
+form {
+  margin: 2rem;
+}
+
+input {
+  display: block;
+  margin: 1rem auto;
+  font-size: 2rem;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  text-align: center;
+}
+
+input:focus {
+  outline: none;
+}
+
+button {
+  font-size: 2rem;
+  padding: 0.5rem 1rem;
+  background-color: black;
+  color: whitesmoke;
+  border: none;
+  border-radius: 1rem;
+}
+
+button:hover {
+  transform: scale(1.2);
+  transition: all 0.5s ease;
+}
