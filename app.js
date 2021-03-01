@@ -1,4 +1,6 @@
 const express = require('express');
+const fs = require('fs');
+const https = require('https');
 const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -96,7 +98,10 @@ app.use((err, req, res, next) => {
   res.json({ error: err.toString() });
 });
 
-
-app.listen(process.env.PORT, () => {
+https.createServer({
+  key: fs.readFileSync('/etc/letsencrypt/live/r0s.in/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/r0s.in/cert.pem'),
+}, app)
+.listen(process.env.PORT, () => {
   console.log(`So it begins! Listening on port ${process.env.PORT}`);
 });
