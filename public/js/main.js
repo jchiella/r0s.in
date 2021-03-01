@@ -1,9 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const form = document.querySelector('form');
-  form.addEventListener('submit', async (e) => {
+  const beforeForm = document.querySelector('form.before');
+  const afterForm = document.querySelector('form.after');
+
+  beforeForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const url = form.elements['url'].value;
+    const url = beforeForm.elements['url'].value;
 
     console.log(url);
 
@@ -17,7 +19,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     const { slug } = await response.json();
+    afterForm.elements['url'].value = `r0s.in/${slug}`;
 
-    form.elements['url'].value = `r0s.in/${slug}`;
+    beforeForm.style.display = 'none';
+    afterForm.style.display = 'block';
+  });
+
+  document.querySelector('button.copy').addEventListener('click', (e) => {
+
+  });
+
+  document.querySelector('button.shortenAnother').addEventListener('click', (e) => {
+    e.preventDefault();
+
+    beforeForm.elements['url'].value = '';
+    afterForm.elements['url'].value = '';
+
+    afterForm.style.display = 'none';
+    beforeForm.style.display = 'block';
   });
 });
